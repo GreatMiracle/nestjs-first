@@ -1,5 +1,5 @@
 import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-
+import { hash } from 'bcrypt';
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -27,7 +27,4 @@ export class UserEntity {
   }
 }
 
-function hash(password: string, arg1: number): string | PromiseLike<string> {
-    throw new Error("Function not implemented.");
-}
 
