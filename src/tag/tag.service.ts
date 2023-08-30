@@ -5,15 +5,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class TagService {
-
-    constructor(
-        @InjectRepository(TagEntity)
-        private readonly tagRepository: Repository<TagEntity>,
-      ) {}
-    
+  constructor(
+    @InjectRepository(TagEntity)
+    private readonly tagRepository: Repository<TagEntity>,
+  ) {}
 
   findAll(): string[] {
-    return ['mot','hai','ba'];
+    return ['mot', 'hai', 'ba'];
   }
 
   async findAllTag(): Promise<TagEntity[]> {
