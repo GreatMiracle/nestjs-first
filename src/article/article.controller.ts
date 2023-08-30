@@ -14,8 +14,8 @@ import {
 import { UserEntity } from 'src/user/user.entity';
 import { UserDecorator } from 'src/user/decorators/user.decorator';
 import { ArticleResponseInterface } from './dto/article.response.dto';
-import { QueryBuilder } from 'typeorm';
 import { ArticlesResponseInterface } from './types/articlesResponse.interface';
+import { async } from 'rxjs';
 
 @Controller('/articles')
 export class ArticleController {
@@ -75,5 +75,18 @@ export class ArticleController {
     @Query() query: any,
   ): Promise<ArticlesResponseInterface> {
     return await this.articleService.findAll(currentUserId, query);
+  }
+
+  @Post(':slug/favorite')
+  @UseGuards(AuthGuard)
+  async addArticleToFavorites(
+    @UserDecorator('id') currentUserId: number,
+    @Param('slug') slug: string,
+  ): Promise<ArticleResponseInterface> {
+    const article = await this.articleService.addArticleToFavorites(
+      slug,
+      currentUserId,
+    );
+    return this.articleService.buildArticleResponse(article);
   }
 }

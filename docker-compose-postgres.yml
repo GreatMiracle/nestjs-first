@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  db:
+  nestjs-db:
     image: postgres:15.4
     restart: always
     environment:
@@ -12,5 +12,5 @@ services:
     volumes: 
       - db:/var/lib/postgresql/data
 volumes:
-  db:
+  nestjs-db:
     driver: local
