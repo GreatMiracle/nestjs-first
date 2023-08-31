@@ -15,7 +15,6 @@ import { UserEntity } from 'src/user/user.entity';
 import { UserDecorator } from 'src/user/decorators/user.decorator';
 import { ArticleResponseInterface } from './dto/article.response.dto';
 import { ArticlesResponseInterface } from './types/articlesResponse.interface';
-import { async } from 'rxjs';
 
 @Controller('/articles')
 export class ArticleController {
@@ -35,7 +34,7 @@ export class ArticleController {
     return this.articleService.buildArticleResponse(article);
   }
 
-  @Get('/:slug')
+  @Get('/slug/:slug')
   @UseGuards(AuthGuard)
   async getArticlebySlug(
     @Param('slug') slug: string,
@@ -44,7 +43,7 @@ export class ArticleController {
     return this.articleService.buildArticleResponse(article);
   }
 
-  @Delete('/:slug')
+  @Delete('/slug/:slug')
   @UseGuards(AuthGuard)
   async deleteArticlebySlug(
     @UserDecorator('username') currentUserId: string,
@@ -77,7 +76,7 @@ export class ArticleController {
     return await this.articleService.findAll(currentUserId, query);
   }
 
-  @Post(':slug/favorite')
+  @Post('/slug/:slug/favorite')
   @UseGuards(AuthGuard)
   async addArticleToFavorites(
     @UserDecorator('id') currentUserId: number,
@@ -88,5 +87,27 @@ export class ArticleController {
       currentUserId,
     );
     return this.articleService.buildArticleResponse(article);
+  }
+
+  @Delete(':slug/favorite')
+  @UseGuards(AuthGuard)
+  async deleteArticleFromFavorites(
+    @UserDecorator('id') currentUserId: number,
+    @Param('slug') slug: string,
+  ): Promise<ArticleResponseInterface> {
+    const article = await this.articleService.deleteArticleFromFavorites(
+      slug,
+      currentUserId,
+    );
+    return this.articleService.buildArticleResponse(article);
+  }
+
+  @Get('/feeds/feeds/feeds')
+  @UseGuards(AuthGuard)
+  async getFeed(
+    @UserDecorator('id') currentUserId: number,
+    @Query() query: any,
+  ): Promise<ArticlesResponseInterface> {
+    return await this.articleService.getFeed(currentUserId, query);
   }
 }
